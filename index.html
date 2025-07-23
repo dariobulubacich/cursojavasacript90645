@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simulador de Registro</title>
+    <title>Torneo de Invierno</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Simulador de Registro a Torneo</h1>
-    <button onclick="iniciarRegistro()">Iniciar Registro</button>
+    <h1>Torneo de Invierno</h1>
+
+    <form id="registroForm">
+      <label
+        >Nombre del jugador:
+        <input type="text" id="nombre" required />
+      </label>
+      <label
+        >Categoría:
+        <input type="text" id="categoria" required />
+      </label>
+      <label
+        >Número de carnet:
+        <input type="text" id="carnet" required />
+      </label>
+      <button type="submit">Registrar jugador</button>
+    </form>
+
+    <div class="resumen">
+      <h2>Resumen de Participantes</h2>
+      <div id="listaParticipantes"></div>
+      <button id="reiniciarBtn">Reiniciar registro</button>
+    </div>
 
     <script src="main.js"></script>
   </body>
