@@ -13,6 +13,37 @@ function guardarEnLocalStorage() {
   localStorage.setItem("participantes", JSON.stringify(participantes));
 }
 
+function iniciarRegistro() {
+  alert("Bienvenido al " + torneo);
+  let continuar = confirm("¿Querés registrar participantes?");
+
+  while (continuar && participantes.length < maxParticipantes) {
+    const nombre = prompt("Ingrese el nombre del jugador:")?.trim();
+    const categoria = prompt("Ingrese la categoría:")?.trim();
+    const carnet = prompt("Ingrese el número de carnet:")?.trim();
+
+    if (!nombre || !categoria || !carnet) {
+      alert("Debés completar todos los campos.");
+    } else if (participantes.some((p) => p.carnet === carnet)) {
+      alert("Este número de carnet ya fue ingresado.");
+    } else {
+      const jugador = { nombre, categoria, carnet };
+      participantes.push(jugador);
+      console.log("Jugador registrado:", jugador);
+      alert(`Jugador ${nombre} registrado con éxito.`);
+    }
+
+    if (participantes.length < maxParticipantes) {
+      continuar = confirm("¿Deseás registrar otro?");
+    } else {
+      alert("Se alcanzó el máximo de participantes.");
+    }
+  }
+
+  guardarEnLocalStorage();
+  mostrarResumen();
+} // <- ✅ cierre correcto de la función iniciarRegistro
+
 function eliminarJugador(index) {
   if (confirm("¿Estás seguro de eliminar este jugador?")) {
     participantes.splice(index, 1);
@@ -22,29 +53,13 @@ function eliminarJugador(index) {
 }
 
 function mostrarResumen() {
-  listaParticipantes.innerHTML = "";
-
-  if (participantes.length === 0) {
-    listaParticipantes.innerHTML = "<p>No hay participantes registrados.</p>";
-    return;
-  }
-
-  participantes.forEach((p, index) => {
-    const div = document.createElement("div");
-    div.className = "jugador";
-    div.innerHTML = `
-      ${index + 1}. ${p.nombre} - Categoría ${p.categoria} - Carnet: ${p.carnet}
-      <button class="eliminar-btn" data-index="${index}">Eliminar</button>
-    `;
-    listaParticipantes.appendChild(div);
+  console.log("===== Resumen de Participantes =====");
+  participantes.forEach((p) => {
+    console.log(
+      `• ${p.nombre} - Categoría ${p.categoria} - Carnet: ${p.carnet}`
+    );
   });
-
-  document.querySelectorAll(".eliminar-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const index = parseInt(btn.dataset.index);
-      eliminarJugador(index);
-    });
-  });
+  alert("Fin del registro. Consultá la consola para ver el resumen.");
 }
 
 form.addEventListener("submit", (e) => {
