@@ -42,7 +42,7 @@ function iniciarRegistro() {
 
   guardarEnLocalStorage();
   mostrarResumen();
-} // <- ✅ cierre correcto de la función iniciarRegistro
+}
 
 function eliminarJugador(index) {
   if (confirm("¿Estás seguro de eliminar este jugador?")) {
@@ -53,12 +53,18 @@ function eliminarJugador(index) {
 }
 
 function mostrarResumen() {
+  if (participantes.length === 0) {
+    console.log("No hay participantes registrados.");
+    return;
+  }
+
   console.log("===== Resumen de Participantes =====");
   participantes.forEach((p) => {
     console.log(
       `• ${p.nombre} - Categoría ${p.categoria} - Carnet: ${p.carnet}`
     );
   });
+
   alert("Fin del registro. Consultá la consola para ver el resumen.");
 }
 
