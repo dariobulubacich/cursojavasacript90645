@@ -13,59 +13,32 @@ function guardarEnLocalStorage() {
   localStorage.setItem("participantes", JSON.stringify(participantes));
 }
 
-function iniciarRegistro() {
-  alert("Bienvenido al " + torneo);
-  let continuar = confirm("¿Querés registrar participantes?");
-
-  while (continuar && participantes.length < maxParticipantes) {
-    const nombre = prompt("Ingrese el nombre del jugador:")?.trim();
-    const categoria = prompt("Ingrese la categoría:")?.trim();
-    const carnet = prompt("Ingrese el número de carnet:")?.trim();
-
-    if (!nombre || !categoria || !carnet) {
-      alert("Debés completar todos los campos.");
-    } else if (participantes.some((p) => p.carnet === carnet)) {
-      alert("Este número de carnet ya fue ingresado.");
-    } else {
-      const jugador = { nombre, categoria, carnet };
-      participantes.push(jugador);
-      console.log("Jugador registrado:", jugador);
-      alert(`Jugador ${nombre} registrado con éxito.`);
-    }
-
-    if (participantes.length < maxParticipantes) {
-      continuar = confirm("¿Deseás registrar otro?");
-    } else {
-      alert("Se alcanzó el máximo de participantes.");
-    }
-  }
-
-  guardarEnLocalStorage();
-  mostrarResumen();
-}
-
 function eliminarJugador(index) {
-  if (confirm("¿Estás seguro de eliminar este jugador?")) {
-    participantes.splice(index, 1);
-    guardarEnLocalStorage();
-    mostrarResumen();
-  }
+  participantes.splice(index, 1);
+  guardarEnLocalStorage();
+  mostrarParticipantes();
 }
 
-function mostrarResumen() {
+function mostrarParticipantes() {
+  listaParticipantes.innerHTML = "";
+
   if (participantes.length === 0) {
-    console.log("No hay participantes registrados.");
+    listaParticipantes.innerHTML = "<li>No hay participantes registrados.</li>";
     return;
   }
 
-  console.log("===== Resumen de Participantes =====");
-  participantes.forEach((p) => {
-    console.log(
-      `• ${p.nombre} - Categoría ${p.categoria} - Carnet: ${p.carnet}`
-    );
-  });
+  participantes.forEach((p, index) => {
+    const li = document.createElement("li");
+    li.textContent = `${p.nombre} - Categoría ${p.categoria} - Carnet: ${p.carnet}`;
 
-  alert("Fin del registro. Consultá la consola para ver el resumen.");
+    const eliminarBtn = document.createElement("button");
+    eliminarBtn.textContent = "Eliminar";
+    eliminarBtn.className = "btn-eliminar";
+    eliminarBtn.onclick = () => eliminarJugador(index);
+
+    li.appendChild(eliminarBtn);
+    listaParticipantes.appendChild(li);
+  });
 }
 
 form.addEventListener("submit", (e) => {
@@ -80,24 +53,25 @@ form.addEventListener("submit", (e) => {
   const categoria = categoriaInput.value.trim();
   const carnet = carnetInput.value.trim();
 
-  if (nombre && categoria && carnet) {
-    const jugador = { nombre, categoria, carnet };
-    participantes.push(jugador);
-    guardarEnLocalStorage();
-    mostrarResumen();
-    form.reset();
-    alert(`Jugador ${nombre} registrado con éxito.`);
-  } else {
-    alert("Debés completar todos los campos.");
+  if (!nombre || !categoria || !carnet) return;
+
+  if (participantes.some((p) => p.carnet === carnet)) {
+    alert("Ese número de carnet ya fue ingresado.");
+    return;
   }
+
+  participantes.push({ nombre, categoria, carnet });
+  guardarEnLocalStorage();
+  mostrarParticipantes();
+  form.reset();
 });
 
 reiniciarBtn.addEventListener("click", () => {
-  if (confirm("¿Seguro que querés reiniciar todo el registro?")) {
+  if (confirm("¿Estás seguro que querés reiniciar el registro?")) {
     participantes = [];
     guardarEnLocalStorage();
-    mostrarResumen();
+    mostrarParticipantes();
   }
 });
 
-window.addEventListener("DOMContentLoaded", mostrarResumen);
+window.addEventListener("DOMContentLoaded", mostrarParticipantes);

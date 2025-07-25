@@ -3,34 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Torneo de Invierno</title>
+    <title>Registro Torneo</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <h1>Torneo de Invierno</h1>
 
     <form id="registroForm">
-      <label
-        >Nombre del jugador:
-        <input type="text" id="nombre" required />
-      </label>
-      <label
-        >Categoría:
-        <input type="text" id="categoria" required />
-      </label>
-      <label
-        >Número de carnet:
-        <input type="text" id="carnet" required />
-      </label>
-      <button type="submit">Registrar jugador</button>
+      <input type="text" id="nombre" placeholder="Nombre" required />
+      <input type="text" id="categoria" placeholder="Categoría" required />
+      <input type="text" id="carnet" placeholder="Carnet" required />
+      <button type="submit">Registrar</button>
     </form>
 
-    <div class="resumen">
-      <h2>Resumen de Participantes</h2>
-      <div id="listaParticipantes"></div>
-      <button id="reiniciarBtn">Reiniciar registro</button>
-    </div>
+    <section>
+      <h2>Participantes Registrados</h2>
+      <ul id="listaParticipantes"></ul>
+    </section>
 
+    <button id="reiniciarBtn">Reiniciar Registro</button>
     <script src="main.js"></script>
   </body>
 </html>
